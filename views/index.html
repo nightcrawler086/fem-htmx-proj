@@ -17,7 +17,7 @@
 {{ end }}
 
 {{ block "form" . }}
-<form hx-post="/contacts">
+<form hx-swap="outerHMTL" hx-target="#contacts" hx-post="/contacts">
   name: <input type="text" name="name" />
   email: <input type="text" name="email" />
   <button type="submit">Create Contact</button>
@@ -25,7 +25,7 @@
 {{ end }}
 
 {{ block "display" . }}
-    <div style="display: flex; flex-direction: column">
+    <div id="contacts" style="display: flex; flex-direction: column">
     {{ range .Contacts }}
       <div>
         Name: <span>{{ .Name }}</span>

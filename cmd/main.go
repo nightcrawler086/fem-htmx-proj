@@ -40,6 +40,15 @@ type Data struct {
   Contacts Contacts
 }
 
+func (d *Data) hasEmail(email string) bool {
+  for _, contact := range d.Contacts {
+    if contact.Email == email {
+      return true
+    }
+  }
+  return false
+}
+
 func newData() Data {
   return Data{
     Contacts: []Contact{
@@ -51,6 +60,18 @@ func newData() Data {
 
 type Count struct {
   Count int
+}
+
+type FormData struct {
+  Values map[string]string
+  Errors map[string]string
+}
+
+func newFormData() FormData {
+  return FormData{
+    Values: make(map[string]string),
+    Errors: make(map[string]string),
+  }
 }
 
 func main() {
@@ -68,8 +89,11 @@ func main() {
     name := c.FormValue("name")
     email := c.FormValue("email")
 
+    if data.hasEmail(email) {
+
+
     data.Contacts = append(data.Contacts, newContact(name, email))
-    return c.Render(200, "index", data)
+    return c.Render(200, "display", data)
   })
   
   e.Logger.Fatal(e.Start(":42069"))
