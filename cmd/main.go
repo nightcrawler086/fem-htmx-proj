@@ -74,26 +74,45 @@ func newFormData() FormData {
   }
 }
 
+type Page struct {
+  Data Data
+  Form FormData
+}
+
+func newPage() Page {
+  return Page{
+    Data: newData(),
+    Form: newFormData(),
+  }
+}
+
 func main() {
   e := echo.New()
   e.Use(middleware.Logger())
 
-  data := newData()
+  page := newPage()
   e.Renderer = newTemplate()
 
   e.GET("/", func(c echo.Context) error {
-    return c.Render(200, "index", data)
+    return c.Render(200, "index", page)
   })
 
   e.POST("/contacts", func(c echo.Context) error {
     name := c.FormValue("name")
     email := c.FormValue("email")
 
-    if data.hasEmail(email) {
+    if page.Data.hasEmail(email) {
+      FormData := newFormData()
+      FormData.Values["name"] = name
+      FormData.Values["email"] = email
+      FormData.Errors["email"] = "Email already exists"
+
+      return c.Render(400, "form", page)
+    }
 
 
-    data.Contacts = append(data.Contacts, newContact(name, email))
-    return c.Render(200, "display", data)
+    page.Data.Contacts = append(page.Data.Contacts, newContact(name, email))
+    return c.Render(200, "display", page)
   })
   
   e.Logger.Fatal(e.Start(":42069"))
