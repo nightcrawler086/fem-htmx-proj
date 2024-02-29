@@ -4,8 +4,8 @@ import (
   "text/template" 
   "io"
 
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+  "github.com/labstack/echo/v4"
+  "github.com/labstack/echo/v4/middleware"
 )
 
 type Templates struct {
@@ -109,7 +109,6 @@ func main() {
 
       return c.Render(400, "form", page)
     }
-
 
     page.Data.Contacts = append(page.Data.Contacts, newContact(name, email))
     return c.Render(200, "display", page)

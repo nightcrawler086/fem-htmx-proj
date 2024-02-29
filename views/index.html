@@ -11,12 +11,17 @@
   <body>
     {{ template "form" .Form }}
     <hr />
+<<<<<<< HEAD
     {{ template "display" .Data }}
+=======
+    {{ template "display" .Data}}
+>>>>>>> 6c7fa9692d3f36eaf285ece6b4aef86867e49d54
   </body>
 </html>
 {{ end }}
 
 {{ block "form" . }}
+<<<<<<< HEAD
 <form hx-swap="outerHMTL" hx-target="#contacts" hx-post="/contacts">
   name: <input
   {{ if .Values.name }} value="{{ .Values.name }}" {{ end }}
@@ -27,6 +32,19 @@
   {{ if .Errors.email }}
     <div style="color: red">{{ .Errors.email }}</div> 
   {{ end }}
+=======
+<form hx-swap="outerHTML" hx-target="#contacts" hx-post="/contacts">
+  name: <input
+    {{ if .Values.name }} value="{{ .Values.name }}" {{ end }}
+    type="text" name="name" />
+  email: <input
+    {{ if .Values.email }} value="{{ .Values.email }}" {{ end }}
+    type="text" name="email" />
+  {{ if .Errors.email }}
+    <div style="color: red">{{ .Errors.email }}</div>
+  {{ end }}
+
+>>>>>>> 6c7fa9692d3f36eaf285ece6b4aef86867e49d54
   <button type="submit">Create Contact</button>
 </form>
 {{ end }}
