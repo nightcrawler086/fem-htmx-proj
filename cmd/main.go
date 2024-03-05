@@ -3,7 +3,7 @@ package main
 import ( 
   "text/template" 
   "io"
-
+  "fmt"
   "github.com/labstack/echo/v4"
   "github.com/labstack/echo/v4/middleware"
 )
@@ -102,16 +102,20 @@ func main() {
     email := c.FormValue("email")
 
     if page.Data.hasEmail(email) {
-      FormData := newFormData()
-      FormData.Values["name"] = name
-      FormData.Values["email"] = email
-      FormData.Errors["email"] = "Email already exists"
+      formData := newFormData()
+      formData.Values["name"] = name
+      formData.Values["email"] = email
+      formData.Errors["email"] = "Email already exists"
 
-      return c.Render(400, "form", page)
+      fmt.Println("found duplicate contact")
+      return c.Render(422, "form", formData)
     }
 
-    page.Data.Contacts = append(page.Data.Contacts, newContact(name, email))
-    return c.Render(200, "display", page)
+    contact := newContact(name, email)
+    page.Data.Contacts = append(page.Data.Contacts, contact)
+
+    c.Render(200, "form", newFormData())
+    return c.Render(200, "oob-contact", contact)
   })
   
   e.Logger.Fatal(e.Start(":42069"))
